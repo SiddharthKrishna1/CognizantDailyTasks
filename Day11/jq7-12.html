@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jQuery Activities 7 to 12 + Hover</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .question { cursor: pointer; color: blue; margin-top: 10px; }
+    .answer { display: none; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- 7. jQuery AJAX -->
+
+  <h2>7. jQuery AJAX</h2>
+
+  <!-- Activity 1: Fetch Data -->
+  <div id="apiData">Fetching data from GitHub...</div>
+
+  <!-- Activity 2: Submit Data -->
+  <form id="myForm">
+    <label>Enter Name: </label>
+    <input type="text" id="name" name="name">
+    <button type="submit">Submit Name</button>
+  </form>
+
+  <hr>
+
+  <!-- 8. jQuery Effects -->
+
+  <h2>8. jQuery Effects</h2>
+
+  <!-- Show/Hide -->
+  <p id="textPara">This paragraph can be shown or hidden.</p>
+  <button id="hideBtn">Hide</button>
+  <button id="showBtn">Show</button>
+
+  <!-- Toggle FAQ -->
+  <div class="faq">
+    <h3 class="question">What is jQuery?</h3>
+    <p class="answer">jQuery is a JavaScript library that simplifies HTML DOM tree traversal and manipulation.</p>
+  </div>
+
+  <hr>
+
+  <!-- 9. jQuery Traversing -->
+
+  <h2>9. jQuery Traversing</h2>
+
+  <!-- Parent -->
+  <div style="padding: 10px;">
+    <span>This is inside a parent div.</span>
+  </div>
+
+  <!-- Sibling -->
+  <p id="first">First Paragraph</p>
+  <p>Second Paragraph (should become bold)</p>
+
+  <hr>
+
+  <!-- 10. jQuery Form Validation -->
+
+  <h2>10. jQuery Form Validation</h2>
+
+  <!-- Required Field Check -->
+  <form id="checkForm">
+    Username: <input type="text" id="username">
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Email Format Validation -->
+  <br>
+  <form id="emailForm">
+    Email: <input type="text" id="email">
+    <button type="submit">Validate Email</button>
+  </form>
+
+  <hr>
+
+  <!-- Mouse Hover Effect -->
+
+  <h2>Extra: Mouse Hover Effect</h2>
+  <p id="hoverPara">Hover over this paragraph to see it change!</p>
+
+  <!-- jQuery Script -->
+  <script>
+    $(document).ready(function () {
+
+      // Activity 7.1: AJAX GET
+      $.get("https://api.github.com/users/octocat", function (data) {
+        $("#apiData").html("GitHub User: " + data.login);
+      });
+
+      // Activity 7.2: AJAX POST
+      $("#myForm").submit(function (e) {
+        e.preventDefault();
+        const name = $("#name").val();
+        $.post("https://httpbin.org/post", { name: name }, function (response) {
+          alert("Name sent to server: " + name);
+        });
+      });
+
+      // Activity 8.1: Show/Hide Effects
+      $("#hideBtn").click(function () {
+        $("#textPara").hide();
+      });
+      $("#showBtn").click(function () {
+        $("#textPara").show();
+      });
+
+      // Activity 8.2: Toggle FAQ
+      $(".question").click(function () {
+        $(this).next(".answer").slideToggle();
+      });
+
+      // Activity 9.1: Parent Selection
+      $("span").parent().css("background-color", "#ffffcc");
+
+      // Activity 9.2: Sibling Navigation
+      $("#first").next().css("font-weight", "bold");
+
+      // Activity 10.1: Required Field Validation
+      $("#checkForm").submit(function (e) {
+        if ($("#username").val() === "") {
+          alert("Username is required!");
+          e.preventDefault();
+        }
+      });
+
+      // Activity 10.2: Email Format Validation
+      $("#emailForm").submit(function (e) {
+        const email = $("#email").val();
+        const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!pattern.test(email)) {
+          alert("Please enter a valid email address.");
+          e.preventDefault();
+        }
+      });
+
+      // Mouse Hover Activity
+      $("#hoverPara").hover(
+        function () {
+          $(this).text("You're hovering over the paragraph!");
+        },
+        function () {
+          $(this).text("Hover over this paragraph to see it change!");
+        }
+      );
+
+    });
+  </script>
+
+</body>
+</html>

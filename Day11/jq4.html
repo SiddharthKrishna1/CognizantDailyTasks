@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Change Box Background</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      display: inline-block;
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+
+  <script>
+    $(document).ready(function() {
+      $(".box").css("background-color", "lightgreen");
+    });
+  </script>
+
+</body>
+</html>
