@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Advanced jQuery Activities</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .highlight { background-color: yellow; }
+    .progress-bar {
+      width: 0;
+      height: 20px;
+      background: green;
+    }
+    .answer, .expand-section, .filtered-list li { display: none; }
+    table, td { border: 1px solid black; padding: 5px; border-collapse: collapse; }
+    .error { color: red; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+  <h2>1. Changing Page Background & Text</h2>
+  <button id="bgBtn">Change Background</button>
+  <button id="textBtn">Change Text</button>
+  <p id="dynamicText">Original Text</p>
+
+  <h2>2. Selectors</h2>
+  <input type="text" placeholder="Name">
+  <input type="email" placeholder="Email">
+  <button id="attrBtn">Style Inputs</button>
+  <br><br>
+  <table id="colorTable">
+    <tr><td>Row 1</td></tr>
+    <tr><td>Row 2</td></tr>
+    <tr><td>Row 3</td></tr>
+    <tr><td>Row 4</td></tr>
+  </table>
+
+  <h2>3. Event Handling</h2>
+  <input type="text" id="keypressBox" placeholder="Type something">
+  <br><br>
+  <div id="dblDiv" style="width:100px;height:50px;background:#ccc;">Double Click Me</div>
+
+  <h2>4. Animations</h2>
+  <button id="expandBtn">Toggle Expand</button>
+  <div class="expand-section">This section expands and collapses.</div>
+  <br><br>
+  <button id="moveBtn">Click to Animate</button>
+
+  <h2>5. DOM Traversing</h2>
+  <ul id="nameList">
+    <li>John</li>
+    <li>Jane</li>
+    <li>Bob</li>
+    <li>Alice</li>
+  </ul>
+  <input type="text" id="filterInput" placeholder="Filter names...">
+  <ul class="filtered-list">
+    <li>John</li>
+    <li>Jane</li>
+    <li>Bob</li>
+    <li>Alice</li>
+  </ul>
+
+  <h2>6. jQuery Effects</h2>
+  <img id="imgFade" src="https://via.placeholder.com/150" alt="Image">
+  <br><button id="fadeBtn">Fade Toggle</button>
+  <br><br>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <button id="progressBtn">Start Progress</button>
+
+  <h2>7. jQuery AJAX</h2>
+  <button id="loadBtn">Load Users</button>
+  <ul id="userList"></ul>
+  <input type="text" id="liveSearch" placeholder="Search user...">
+  <ul id="searchResults">
+    <li>Alpha</li>
+    <li>Beta</li>
+    <li>Charlie</li>
+    <li>Delta</li>
+  </ul>
+
+  <h2>8. Validation</h2>
+  <input type="password" id="password" placeholder="Password">
+  <span id="strength"></span>
+  <br><br>
+  <input type="text" id="validateInput" placeholder="Required field">
+  <span class="error" id="errorText"></span>
+
+  <script>
+    $(document).ready(function () {
+
+      // 1. Background & Text
+      $('#bgBtn').click(() => $('body').css('background-color', '#f0f8ff'));
+      $('#textBtn').click(() => $('#dynamicText').text('Text has been changed!'));
+
+      // 2. Selectors
+      $('#attrBtn').click(() => $('input').css('border', '2px solid red'));
+      $('#colorTable tr:odd').css('background-color', '#eef');
+      $('#colorTable tr:even').css('background-color', '#cfc');
+
+      // 3. Event Handling
+      $('#keypressBox').on('keyup', function () {
+        alert('You typed: ' + $(this).val());
+      });
+      $('#dblDiv').on('dblclick', function () {
+        $(this).css('background-color', 'orange');
+      });
+
+      // 4. Animations
+      $('#expandBtn').click(() => $('.expand-section').slideToggle());
+      $('#moveBtn').click(function () {
+        $(this).animate({ left: '+=200px' }, 1000);
+      });
+
+      // 5. Traversing
+      $('#nameList li:first').addClass('highlight');
+      $('#nameList li:last').addClass('highlight');
+      $('#filterInput').on('keyup', function () {
+        const val = $(this).val().toLowerCase();
+        $('.filtered-list li').hide().filter(function () {
+          return $(this).text().toLowerCase().includes(val);
+        }).show();
+      });
+
+      // 6. Effects
+      $('#fadeBtn').click(() => $('#imgFade').fadeToggle());
+      $('#progressBtn').click(() => {
+        $('#progressBar').css('width', '0').show().animate({ width: '100%' }, 2000);
+      });
+
+      // 7. AJAX
+      $('#loadBtn').click(() => {
+        $.get('https://jsonplaceholder.typicode.com/users', function (data) {
+          $('#userList').empty();
+          data.slice(0, 5).forEach(user => {
+            $('#userList').append('<li>' + user.name + '</li>');
+          });
+        });
+      });
+      $('#liveSearch').on('keyup', function () {
+        const query = $(this).val().toLowerCase();
+        $('#searchResults li').each(function () {
+          const match = $(this).text().toLowerCase().includes(query);
+          $(this).toggle(match);
+        });
+      });
+
+      // 8. Form Validation
+      $('#password').on('keyup', function () {
+        const strength = $(this).val().length;
+        $('#strength').text(strength < 6 ? 'Weak' : 'Strong');
+      });
+      $('#validateInput').on('input', function () {
+        if ($(this).val() === '') {
+          $('#errorText').text('This field is required');
+        } else {
+          $('#errorText').text('');
+        }
+      });
+
+    });
+  </script>
+
+</body>
+</html>
